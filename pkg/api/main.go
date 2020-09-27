@@ -5,17 +5,14 @@ import (
 	"flag"
 	"net/http"
 
+	"github.com/evilmonkeyinc/account-manager/gen/openapi"
+
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"google.golang.org/grpc"
-
-	"github.com/evilmonkeyinc/account-manager/gen/openapi"
 )
 
-var (
-	// command-line options:
-	// gRPC server endpoint
-	grpcServerEndpoint = flag.String("grpc-server-endpoint", "localhost:9090", "gRPC server endpoint")
-)
+const grpcServerEndpoint string = "localhost:9090"
+const httpServerEndpoint string = ":8081"
 
 func run() error {
 	ctx := context.Background()
@@ -26,13 +23,13 @@ func run() error {
 	// Note: Make sure the gRPC server is running properly and accessible
 	mux := runtime.NewServeMux()
 	opts := []grpc.DialOption{grpc.WithInsecure()}
-	err := openapi.RegisterYourServiceHandlerFromEndpoint(ctx, mux, *grpcServerEndpoint, opts)
+	err := openapi.RegisterOpenapiHandlerServer(ctx, mux, grpcServerEndpoint, opts)
 	if err != nil {
 		return err
 	}
 
 	// Start HTTP server (and proxy calls to gRPC server endpoint)
-	return http.ListenAndServe(":8081", mux)
+	return http.ListenAndServe(httpServerEndpoint, mux)
 }
 
 func main() {

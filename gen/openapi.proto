@@ -1,0 +1,84 @@
+syntax = "proto3";
+
+package openapi;
+
+import "google/api/annotations.proto";
+
+import "google/protobuf/descriptor.proto";
+
+message Error {
+  string code = 1;
+
+  string message = 2;
+}
+
+message Paging {
+  string current = 1;
+
+  string first = 2;
+
+  string previous = 3;
+
+  string next = 4;
+
+  string last = 5;
+}
+
+message PageDetails {
+  int64 limit = 1;
+
+  int64 page = 2;
+
+  int64 count = 3;
+
+  int64 total = 4;
+
+  Paging paging = 5;
+}
+
+message Plugin {
+  string name = 1;
+}
+
+message Limit {
+  int64 limit = 1;
+}
+
+message Page {
+  int64 page = 1;
+}
+
+message GetPluginParameters {
+  string name = 1;
+}
+
+message ListPluginsParameters {
+  Limit limit = 1;
+
+  Page page = 2;
+}
+
+message ListPluginsOK {
+  int64 limit = 1;
+
+  int64 page = 2;
+
+  int64 count = 3;
+
+  int64 total = 4;
+
+  Paging paging = 5;
+
+  repeated Plugin data = 6;
+}
+
+service Openapi {
+  rpc GetPlugin ( GetPluginParameters ) returns ( Plugin ) {
+    option (google.api.http) = { get:"/plugins/{name}"  };
+  }
+
+  rpc ListPlugins ( ListPluginsParameters ) returns ( ListPluginsOK ) {
+    option (google.api.http) = { get:"/plugins/list"  };
+  }
+}
+
