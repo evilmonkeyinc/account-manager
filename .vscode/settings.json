@@ -1,0 +1,5 @@
+{
+    "go.formatTool": "goimports",
+    "editor.formatOnSave": true,
+    "editor.suggest.showModules": true
+}

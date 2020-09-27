@@ -40,22 +40,14 @@ message Plugin {
   string name = 1;
 }
 
-message Limit {
-  int64 limit = 1;
-}
-
-message Page {
-  int64 page = 1;
-}
-
 message GetPluginParameters {
   string name = 1;
 }
 
 message ListPluginsParameters {
-  Limit limit = 1;
+  int64 limit = 1;
 
-  Page page = 2;
+  int64 page = 2;
 }
 
 message ListPluginsOK {
@@ -74,7 +66,7 @@ message ListPluginsOK {
 
 service Openapi {
   rpc GetPlugin ( GetPluginParameters ) returns ( Plugin ) {
-    option (google.api.http) = { get:"/plugins/{name}"  };
+    option (google.api.http) = { get:"/plugin/{name}"  };
   }
 
   rpc ListPlugins ( ListPluginsParameters ) returns ( ListPluginsOK ) {

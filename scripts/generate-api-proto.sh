@@ -1,6 +1,7 @@
 #!/bin/sh
-docker build -t generator:0.0.1 -f ./build/Dockerfile .
-docker run --name gen-api-proto generator:0.0.1 /bin/bash
-rm -rf ./gen/
-docker cp gen-api-proto:/tmp/gen/. gen/
+docker build -t protobuf-generator -f ./build/scripts/Dockerfile .
+docker run --name gen-api-proto protobuf-generator /bin/bash
+rm -rf gen/
+mkdir -p gen/openapi
+docker cp gen-api-proto:/tmp/gen/. gen/openapi/
 docker rm gen-api-proto

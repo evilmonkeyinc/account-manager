@@ -260,7 +260,7 @@ func RegisterOpenapiHandlerClient(ctx context.Context, mux *runtime.ServeMux, cl
 }
 
 var (
-	pattern_Openapi_GetPlugin_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"plugins", "name"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_Openapi_GetPlugin_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 1, 0, 4, 1, 5, 1}, []string{"plugin", "name"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_Openapi_ListPlugins_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"plugins", "list"}, "", runtime.AssumeColonVerbOpt(true)))
 )
