@@ -27,18 +27,6 @@ func RunServer(serverEndpoint string) error {
 type impl struct {
 }
 
-func (server *impl) GetPlugin(ctx context.Context, params *openapi.GetPluginParameters) (*openapi.Plugin, error) {
-
-	if params.Name == "default" {
-		return &openapi.Plugin{
-				Name: fmt.Sprintf("plugin-%s", params.Name),
-			},
-			nil
-	}
-
-	return nil, fmt.Errorf("failed to find plugin %s", params.Name)
-}
-
 func (server *impl) ListPlugins(ctx context.Context, request *openapi.ListPluginsParameters) (*openapi.ListPluginsOK, error) {
 
 	response := &openapi.ListPluginsOK{
@@ -49,4 +37,16 @@ func (server *impl) ListPlugins(ctx context.Context, request *openapi.ListPlugin
 	}
 
 	return response, nil
+}
+
+func (server *impl) FetchPlugin(ctx context.Context, params *openapi.FetchPluginParameters) (*openapi.Plugin, error) {
+
+	if params.Name == "default" {
+		return &openapi.Plugin{
+				Name: fmt.Sprintf("plugin-%s", params.Name),
+			},
+			nil
+	}
+
+	return nil, fmt.Errorf("failed to find plugin %s", params.Name)
 }

@@ -2,111 +2,26 @@ openapi: 3.0.3
 info:
   title: Account Management
   version: "1.0"
-paths:
-  /plugin/{name}:
-    get:
-      operationId: "getPlugin"
-      description: "Get the specified plugin"
-      parameters:
-        - name: name
-          in: path
-          description: The plugin name
-          required: true
-          schema:
-            type: string
-      responses:
-        "200":
-          description: OK
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Plugin"
-        "404":
-          description: "Not Found"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-  /plugins/list:
-    get:
-      operationId: "listPlugins"
-      description: "list all supported plugins"
-      parameters:
-        - name: limit
-          in: query
-          required: false
-          description: "The number of items to return to the query, defaults to 25"
-          schema:
-            type: integer
-        - name: page
-          in: query
-          required: false
-          description: "The index of the page to retrieve, defaults to 0"
-          schema:
-            type: integer
-      responses:
-        "500":
-          description: "Internal Server Error"
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/Error"
-        "200":
-          description: "OK"
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: "#/components/schemas/PageDetails"
-                  - type: object
-                    properties:
-                      data:
-                        type: array
-                        items:
-                          $ref: "#/components/schemas/Plugin"
-servers:
-  - url: "https://api.server.test/v1"
-    description: local test server
+  contact:
+    name: Scott McGowan
+    url: http://github.com/evilmonkeyinc
+    email: evilmonkeyinc@gmail.com
+tags:
+  - name: plugin
+    description: a plugin used to extend the service
 components:
   schemas:
     Error:
-      type: object
-      properties:
-        code:
-          type: string
-        message:
-          type: string
+      $ref: "./components/error.yaml"
     PageDetails:
-      type: object
-      properties:
-        limit:
-          type: integer
-        page:
-          type: integer
-        count:
-          type: integer
-        total:
-          type: integer
-        paging:
-          type: object
-          properties:
-            current:
-              type: string
-              format: url
-            first:
-              type: string
-              format: url
-            previous:
-              type: string
-              format: url
-            next:
-              type: string
-              format: url
-            last:
-              type: string
-              format: url
+      $ref: "./components/page-details.yaml"
     Plugin:
-      type: object
-      properties:
-        name:
-          type: string
+      $ref: "./components/plugin.yaml"
+paths:
+  /plugins/list:
+    $ref: "./paths/plugins.yaml#/paths/~1plugins~1list"
+  /plugins/{name}:
+    $ref: "./paths/plugins.yaml#/paths/~1plugins~1{name}"
+servers:
+  - url: "https://api.server.test/v1"
+    description: local test server

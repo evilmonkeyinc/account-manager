@@ -1,0 +1,14 @@
+{
+  "name": "account-manager",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "validate": "swagger-cli validate openapi.yaml",
+    "bundle": "swagger-cli bundle --type yaml --outfile ./dist/openapi.yaml openapi.yaml"
+  },
+  "author": "evilmonkeyinc@gmail.com",
+  "license": "MIT",
+  "devDependencies": {
+    "@apidevtools/swagger-cli": "^4.0.4"
+  }
+}

@@ -40,10 +40,6 @@ message Plugin {
   string name = 1;
 }
 
-message GetPluginParameters {
-  string name = 1;
-}
-
 message ListPluginsParameters {
   int64 limit = 1;
 
@@ -64,13 +60,17 @@ message ListPluginsOK {
   repeated Plugin data = 6;
 }
 
-service Openapi {
-  rpc GetPlugin ( GetPluginParameters ) returns ( Plugin ) {
-    option (google.api.http) = { get:"/plugin/{name}"  };
-  }
+message FetchPluginParameters {
+  string name = 1;
+}
 
+service Openapi {
   rpc ListPlugins ( ListPluginsParameters ) returns ( ListPluginsOK ) {
     option (google.api.http) = { get:"/plugins/list"  };
+  }
+
+  rpc FetchPlugin ( FetchPluginParameters ) returns ( Plugin ) {
+    option (google.api.http) = { get:"/plugins/{name}"  };
   }
 }
 
