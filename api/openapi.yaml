@@ -5,9 +5,15 @@ info:
 paths:
   /plugins/{name}:
     get:
+      operationId: 'getPlugin'
       description: 'Get the specified plugin'
       parameters:
-        - $ref: '#/components/parameters/plugin_name'
+        - name: name
+          in: path
+          description: The plugin name
+          required: true
+          schema:
+            type: string
       responses:
         '200':
           description: OK
@@ -15,13 +21,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Plugin'
+        '404':
+          description: 'Not Found'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   /plugins/list:
     get:
+      operationId: 'listPlugins'
       description: 'list all supported plugins'
       parameters:
           - $ref: '#/components/parameters/limit'
           - $ref: '#/components/parameters/page'
       responses:
+        '500':
+          description: 'Internal Server Error'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
         '200':
           description: 'OK'
           content:
@@ -40,6 +59,13 @@ servers:
     description: local test server
 components:
   schemas:
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        message:
+          type: string
     PageDetails:
       type: object
       properties:
@@ -75,13 +101,6 @@ components:
         name:
           type: string
   parameters:
-    plugin_name:
-      name: name
-      in: path
-      required: true
-      description: 'The name of the plugin'
-      schema:
-        type: string
     limit:
       name: limit
       in: query
