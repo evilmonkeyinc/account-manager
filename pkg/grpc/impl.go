@@ -1,27 +1,27 @@
-package server
+package grpc
 
 import (
 	"context"
 	"fmt"
 	"net"
+	"sync"
 
 	"github.com/evilmonkeyinc/account-manager/gen/openapi"
 	"google.golang.org/grpc"
 )
 
-func RunServer(serverEndpoint string) error {
-	listener, err := net.Listen("tcp", serverEndpoint)
+// Run will start the GRPC server on the specified server endpoint
+func Run(ctx context.Context, waitGroup *sync.WaitGroup, grpcServerEndpoint string) error {
+	defer waitGroup.Done()
+
+	listener, err := net.Listen("tcp", grpcServerEndpoint)
 	if err != nil {
 		return fmt.Errorf("failed to listen: %v", err)
 	}
 	server := grpc.NewServer()
 	openapi.RegisterOpenapiServer(server, &impl{})
 
-	if err := server.Serve(listener); err != nil {
-		return fmt.Errorf("failed to serve: %v", err)
-	}
-
-	return nil
+	return server.Serve(listener)
 }
 
 type impl struct {

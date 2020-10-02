@@ -4,11 +4,12 @@
   "description": "",
   "scripts": {
     "validate": "swagger-cli validate openapi.yaml",
+    "prebundle": "npm run validate",
     "bundle": "swagger-cli bundle --type yaml --outfile ./dist/openapi.yaml openapi.yaml"
   },
   "author": "evilmonkeyinc@gmail.com",
   "license": "MIT",
   "devDependencies": {
-    "@apidevtools/swagger-cli": "^4.0.4"
+    "swagger-cli": "^4.0.4"
   }
 }
