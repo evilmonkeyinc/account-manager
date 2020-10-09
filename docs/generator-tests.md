@@ -62,4 +62,15 @@ each handler handles HTTP response writing, it would be good if it was partly hi
 ### Decision
 Soft Maybe, nothing is blocked but it is awkward
 
-## ----
+## Swagger CodeGen CLI
+[swagger-codegen](https://github.com/swagger-api/swagger-codegen/tree/3.0.0)
+
+### Pro's
+Can support all functionality in sample yaml
+### Con's
+Does not generate interface, requires an ignore file to be included so as to not override implementation
+
+### Decision
+Not suitable since the generated files would include the implementation files
+
+## ---

@@ -5,9 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/evilmonkeyinc/account-manager/gen/Openapi"
-	"github.com/evilmonkeyinc/account-manager/pkg/service"
-	"github.com/go-chi/chi"
+	"github.com/gorilla/mux"
 )
 
 const (
@@ -20,17 +18,13 @@ func main() {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	// gnostic-go-generator
-	// openapi.Initialize(service.New())
-	// err := openapi.ServeHTTP(httpServerEndpoint)
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	// Chi and oapi
-	r := chi.NewRouter()
-	r.Mount("/api", Openapi.Handler(service.New()))
-	http.ListenAndServe(httpServerEndpoint, r)
+	r := mux.NewRouter()
+	r.HandleFunc("/ping", pingHandler)
+	http.Handle("/", r)
 
 	fmt.Println("service is stopping")
+}
+
+func pingHandler(http.ResponseWriter, *http.Request) {
+
 }
