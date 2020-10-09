@@ -1,0 +1,6 @@
+name: limit
+in: query
+required: false
+description: "The number of items to return to the query, defaults to 25"
+schema:
+  type: integer

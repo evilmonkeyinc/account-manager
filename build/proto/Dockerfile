@@ -9,8 +9,10 @@ RUN go get -u -v \
     google.golang.org/grpc \
     github.com/googleapis/gnostic \
     github.com/googleapis/gnostic-grpc \
+    github.com/googleapis/gnostic/plugins/gnostic-vocabulary \
     github.com/grpc-ecosystem/grpc-gateway/protoc-gen-grpc-gateway \
     github.com/grpc-ecosystem/grpc-gateway/protoc-gen-swagger
+RUN go get -u -v github.com/googleapis/gnostic-go-generator
 RUN git clone https://github.com/protocolbuffers/protobuf.git
 
 FROM base as builder
@@ -18,9 +20,10 @@ ENV GOBIN /go/bin
 RUN export PATH=$PATH:$GOBIN; \
     mkdir -p /tmp/gen/google; \
     cp -r ./src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis/google/. /tmp/gen/google/; \
-    cp -r ./protobuf/src/google/. /tmp/gen/google/
+    cp -r ./protobuf/src/google/. /tmp/gen/google/; 
 ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
 ADD ./api/dist/ ./api/
-RUN gnostic --grpc-out=/tmp/gen/ ./api/openapi.yaml; \ 
-    protoc --proto_path=/tmp/gen/ --go_out=plugins=grpc:/tmp/gen/ --grpc-gateway_out=logtostderr=true,paths=source_relative:/tmp/gen/ /tmp/gen/openapi.proto
+# RUN gnostic --go-generator-out=/tmp/gen/openapi ./api/openapi.yaml;
+RUN gnostic --grpc-out=/tmp/gen/ --vocabulary_out=/tmp/gen/ ./api/openapi.yaml;
+# RUN protoc --proto_path=/tmp/gen/ --go_out=plugins=grpc:/tmp/gen/ --grpc-gateway_out=logtostderr=true,paths=source_relative:/tmp/gen/ /tmp/gen/openapi.proto
 RUN rm -rf /tmp/gen/google/

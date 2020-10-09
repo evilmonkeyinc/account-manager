@@ -1,0 +1,9 @@
+type: object
+allOf:
+  - $ref: "./page-details.yaml"
+  - type: object
+    properties:
+      data:
+        type: array
+        items:
+          $ref: "./plugin.yaml"

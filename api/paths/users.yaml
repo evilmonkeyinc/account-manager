@@ -5,24 +5,24 @@ components:
     queryPage:
       $ref: "../components/parameters/query-page.yaml"
   schemas:
-    ListPluginsResponse:
-      $ref: "../components/schemas/plugins-list.yaml"
+    ListUsersResponse:
+      $ref: "../components/schemas/users-list.yaml"
     PageDetails:
       $ref: "../components/schemas/page-details.yaml"
-    Plugin:
-      $ref: "../components/schemas/plugin.yaml"
+    User:
+      $ref: "../components/schemas/user.yaml"
   responses:
     "response404":
       $ref: "../components/responses/404.yaml"
     "response500":
       $ref: "../components/responses/500.yaml"
 paths:
-  plugins:
+  users:
     get:
-      operationId: "listPlugins"
+      operationId: "listUsers"
       tags:
-        - plugin
-      description: "list all supported plugins"
+        - users
+      description: "list all users"
       parameters:
         - $ref: "#/components/parameters/queryLimit"
         - $ref: "#/components/parameters/queryPage"
@@ -32,28 +32,26 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ListPluginsResponse"
+                $ref: "#/components/schemas/ListUsersResponse"
         "500":
           $ref: "#/components/responses/response500"
-  plugins/{name}:
-    get:
-      operationId: "fetchPlugin"
+    post:
+      operationId: "createUser"
       tags:
-        - plugin
-      description: "Get the specified plugin"
-      parameters:
-        - name: name
-          in: path
-          description: The plugin name
-          required: true
-          schema:
-            type: string
+        - users
+      description: "create a new user"
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User"
       responses:
         "200":
-          description: OK
+          description: "OK"
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/Plugin"
-        "404":
-          $ref: "#/components/responses/response404"
+                $ref: "#/components/schemas/User"
+        "500":
+          $ref: "#/components/responses/response500"

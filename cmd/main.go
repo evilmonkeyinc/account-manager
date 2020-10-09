@@ -3,10 +3,11 @@ package main
 import (
 	"context"
 	"fmt"
-	"sync"
+	"net/http"
 
-	"github.com/evilmonkeyinc/account-manager/pkg/grpc"
-	"github.com/evilmonkeyinc/account-manager/pkg/restful"
+	"github.com/evilmonkeyinc/account-manager/gen/Openapi"
+	"github.com/evilmonkeyinc/account-manager/pkg/service"
+	"github.com/go-chi/chi"
 )
 
 const (
@@ -19,21 +20,17 @@ func main() {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	channel := make(chan int)
-	defer close(channel)
+	// gnostic-go-generator
+	// openapi.Initialize(service.New())
+	// err := openapi.ServeHTTP(httpServerEndpoint)
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-	waitGroup := &sync.WaitGroup{}
-	waitGroup.Add(2)
-
-	fmt.Println("run grpc")
-	go grpc.Run(ctx, waitGroup, grpcServerEndpoint)
-
-	fmt.Println("run restful")
-	go restful.Run(ctx, waitGroup, grpcServerEndpoint, httpServerEndpoint)
-
-	fmt.Println("service is running")
-
-	waitGroup.Wait()
+	// Chi and oapi
+	r := chi.NewRouter()
+	r.Mount("/api", Openapi.Handler(service.New()))
+	http.ListenAndServe(httpServerEndpoint, r)
 
 	fmt.Println("service is stopping")
 }
