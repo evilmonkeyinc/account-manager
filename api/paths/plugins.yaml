@@ -12,10 +12,12 @@ components:
     Plugin:
       $ref: "../components/schemas/plugin.yaml"
   responses:
-    "response404":
-      $ref: "../components/responses/404.yaml"
-    "response500":
-      $ref: "../components/responses/500.yaml"
+    "UnauthorizedError":
+      $ref: "../components/responses/UnauthorizedError.yaml"
+    "NotFoundError":
+      $ref: "../components/responses/NotFoundError.yaml"
+    "InternalServerError":
+      $ref: "../components/responses/InternalServerError.yaml"
 paths:
   plugins:
     get:
@@ -33,8 +35,10 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/ListPluginsResponse"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
         "500":
-          $ref: "#/components/responses/response500"
+          $ref: "#/components/responses/InternalServerError"
   plugins/{name}:
     parameters:
       - name: name
@@ -55,7 +59,9 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Plugin"
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"
         "404":
-          $ref: "#/components/responses/response404"
+          $ref: "#/components/responses/NotFoundError"
         "500":
-          $ref: "#/components/responses/response500"
+          $ref: "#/components/responses/InternalServerError"

@@ -4,6 +4,7 @@
 package server
 
 import (
+	"context"
 	"fmt"
 	"net/http"
 
@@ -37,6 +38,8 @@ func (siw *ServerInterfaceWrapper) ListPlugins(w http.ResponseWriter, r *http.Re
 	ctx := r.Context()
 
 	var err error
+
+	ctx = context.WithValue(ctx, "ApiKeyAuth.Scopes", []string{""})
 
 	// Parameter object where we will unmarshal all parameters from the context
 	var params ListPluginsParams
@@ -81,6 +84,8 @@ func (siw *ServerInterfaceWrapper) FetchPlugin(w http.ResponseWriter, r *http.Re
 		return
 	}
 
+	ctx = context.WithValue(ctx, "ApiKeyAuth.Scopes", []string{""})
+
 	siw.Handler.FetchPlugin(w, r.WithContext(ctx), name)
 }
 
@@ -89,6 +94,8 @@ func (siw *ServerInterfaceWrapper) ListUsers(w http.ResponseWriter, r *http.Requ
 	ctx := r.Context()
 
 	var err error
+
+	ctx = context.WithValue(ctx, "ApiKeyAuth.Scopes", []string{""})
 
 	// Parameter object where we will unmarshal all parameters from the context
 	var params ListUsersParams
@@ -121,6 +128,8 @@ func (siw *ServerInterfaceWrapper) ListUsers(w http.ResponseWriter, r *http.Requ
 // CreateUser operation middleware
 func (siw *ServerInterfaceWrapper) CreateUser(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
+
+	ctx = context.WithValue(ctx, "ApiKeyAuth.Scopes", []string{""})
 
 	siw.Handler.CreateUser(w, r.WithContext(ctx))
 }

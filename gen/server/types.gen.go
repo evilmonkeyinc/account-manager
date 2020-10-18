@@ -64,13 +64,18 @@ type QueryLimit int
 // QueryPage defines model for queryPage.
 type QueryPage int
 
-// Response404 defines model for response404.
-type Response404 struct {
+// InternalServerError defines model for InternalServerError.
+type InternalServerError struct {
 	Error *Error `json:"error,omitempty"`
 }
 
-// Response500 defines model for response500.
-type Response500 struct {
+// NotFoundError defines model for NotFoundError.
+type NotFoundError struct {
+	Error *Error `json:"error,omitempty"`
+}
+
+// UnauthorizedError defines model for UnauthorizedError.
+type UnauthorizedError struct {
 	Error *Error `json:"error,omitempty"`
 }
 

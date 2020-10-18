@@ -18,10 +18,15 @@ components:
     queryPage:
       $ref: "./components/parameters/query-page.yaml"
   responses:
-    "response404":
-      $ref: "./components/responses/404.yaml"
-    "response500":
-      $ref: "./components/responses/500.yaml"
+    "UnauthorizedError":
+      $ref: "./components/responses/UnauthorizedError.yaml"
+    "NotFoundError":
+      $ref: "./components/responses/NotFoundError.yaml"
+    "InternalServerError":
+      $ref: "./components/responses/InternalServerError.yaml"
+  securitySchemes:
+    ApiKeyAuth:
+      $ref: "./components/securitySchemes/api-key.yaml"
   schemas:
     Error:
       $ref: "./components/schemas/error.yaml"
@@ -44,6 +49,8 @@ paths:
     $ref: "./paths/plugins.yaml#/paths/plugins~1{name}"
   /users:
     $ref: "./paths/users.yaml#/paths/users"
+security:
+  - ApiKeyAuth: []
 servers:
   - url: "https://api.server.test/v1"
     description: local test server

@@ -36,7 +36,7 @@ func (wrapper *errorResponseWrapper) Done() {
 	contentType := wrapper.ResponseWriter.Header().Get("Content-Type")
 	if strings.HasPrefix(contentType, "text/plain") && wrapper.status >= 400 {
 		// We want to wrap any plain-text errors in our error object
-		data := &server.Response500{
+		data := &server.InternalServerError{
 			Error: &server.Error{
 				Code:    fmt.Sprintf("%d", wrapper.status),
 				Message: strings.TrimSpace(wrapper.buffer.String()),
