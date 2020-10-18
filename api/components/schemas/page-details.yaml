@@ -1,4 +1,10 @@
 type: object
+required:
+  - limit
+  - page
+  - count
+  - total
+  - _links
 properties:
   limit:
     type: integer
@@ -8,21 +14,5 @@ properties:
     type: integer
   total:
     type: integer
-  paging:
-    type: object
-    properties:
-      current:
-        type: string
-        format: url
-      first:
-        type: string
-        format: url
-      previous:
-        type: string
-        format: url
-      next:
-        type: string
-        format: url
-      last:
-        type: string
-        format: url
+  _links:
+    $ref: ./paging-links.yaml

@@ -27,6 +27,8 @@ components:
       $ref: "./components/schemas/error.yaml"
     PageDetails:
       $ref: "./components/schemas/page-details.yaml"
+    PagingLinks:
+      $ref: "./components/schemas/paging-links.yaml"
     Plugin:
       $ref: "./components/schemas/plugin.yaml"
     ListPluginsResponse:

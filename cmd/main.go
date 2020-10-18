@@ -5,7 +5,10 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/gorilla/mux"
+	"github.com/evilmonkeyinc/account-manager/pkg/middleware"
+	"github.com/evilmonkeyinc/account-manager/pkg/service"
+	"github.com/go-chi/chi"
+	chimiddleware "github.com/go-chi/chi/middleware"
 )
 
 const (
@@ -18,13 +21,10 @@ func main() {
 	ctx, cancel := context.WithCancel(ctx)
 	defer cancel()
 
-	r := mux.NewRouter()
-	r.HandleFunc("/ping", pingHandler)
-	http.Handle("/", r)
+	router := chi.NewRouter()
+	router.Use(chimiddleware.RequestID, chimiddleware.Logger, middleware.ErrorWrapper)
+	router.Mount("/api/v1/", service.New())
+	http.ListenAndServe(httpServerEndpoint, router)
 
 	fmt.Println("service is stopping")
-}
-
-func pingHandler(http.ResponseWriter, *http.Request) {
-
 }

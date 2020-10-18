@@ -36,18 +36,18 @@ paths:
         "500":
           $ref: "#/components/responses/response500"
   plugins/{name}:
+    parameters:
+      - name: name
+        in: path
+        description: The plugin name
+        required: true
+        schema:
+          type: string
     get:
       operationId: "fetchPlugin"
       tags:
         - plugin
       description: "Get the specified plugin"
-      parameters:
-        - name: name
-          in: path
-          description: The plugin name
-          required: true
-          schema:
-            type: string
       responses:
         "200":
           description: OK
@@ -57,3 +57,5 @@ paths:
                 $ref: "#/components/schemas/Plugin"
         "404":
           $ref: "#/components/responses/response404"
+        "500":
+          $ref: "#/components/responses/response500"

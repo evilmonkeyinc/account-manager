@@ -1,0 +1,16 @@
+type: object
+required:
+  - current
+  - first
+  - last
+properties:
+  current:
+    type: string
+  first:
+    type: string
+  previous:
+    type: string
+  next:
+    type: string
+  last:
+    type: string

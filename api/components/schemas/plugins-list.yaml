@@ -2,6 +2,8 @@ type: object
 allOf:
   - $ref: "./page-details.yaml"
   - type: object
+    required:
+      - data
     properties:
       data:
         type: array

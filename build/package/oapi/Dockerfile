@@ -9,7 +9,8 @@ RUN go get -u -v \
 FROM base as builder
 ENV GOBIN /go/bin
 RUN export PATH=$PATH:$GOBIN; \
-    mkdir -p /tmp/gen/
+    mkdir -p /tmp/gen/server
 ADD "https://www.random.org/cgi-bin/randbyte?nbytes=10&format=h" skipcache
 ADD ./api/dist/ ./api/
-RUN oapi-codegen --generate types,chi-server,spec ./api/openapi.yaml  > /tmp/gen/openapi.gen.go
+RUN oapi-codegen --generate types --package server -o /tmp/gen/server/types.gen.go ./api/openapi.yaml
+RUN oapi-codegen --generate chi-server --package server -o /tmp/gen/server/chi-server.gen.go ./api/openapi.yaml
