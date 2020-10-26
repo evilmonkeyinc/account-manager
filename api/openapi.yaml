@@ -25,8 +25,10 @@ components:
     "InternalServerError":
       $ref: "./components/responses/InternalServerError.yaml"
   securitySchemes:
-    ApiKeyAuth:
-      $ref: "./components/securitySchemes/api-key.yaml"
+    BasicAuth:
+      $ref: "./components/securitySchemes/basic.yaml"
+    BearerAuth:
+      $ref: "./components/securitySchemes/bearer.yaml"
   schemas:
     Error:
       $ref: "./components/schemas/error.yaml"
@@ -49,8 +51,8 @@ paths:
     $ref: "./paths/plugins.yaml#/paths/plugins~1{name}"
   /users:
     $ref: "./paths/users.yaml#/paths/users"
-security:
-  - ApiKeyAuth: []
+  /users/token:
+    $ref: "./paths/users.yaml#/paths/users~1token"
 servers:
   - url: "https://api.server.test/v1"
     description: local test server

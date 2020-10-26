@@ -1,10 +1,11 @@
 package service
 
 import (
-	"encoding/json"
+	"errors"
 	"net/http"
 
 	"github.com/evilmonkeyinc/account-manager/gen/server"
+	"github.com/evilmonkeyinc/account-manager/pkg/service/lib"
 )
 
 func New() http.Handler {
@@ -15,7 +16,6 @@ type serverImpl struct {
 }
 
 func (impl *serverImpl) ListPlugins(w http.ResponseWriter, r *http.Request, params server.ListPluginsParams) {
-	wrapper := NewResponseWriterWrapper(w)
 
 	data := make([]server.Plugin, 0)
 
@@ -30,17 +30,17 @@ func (impl *serverImpl) ListPlugins(w http.ResponseWriter, r *http.Request, para
 			Limit: limit,
 			Page:  page,
 			Total: total,
-			Links: buildPagingLinks(r.Host, r.URL, page, limit, total),
+			Links: lib.BuildPagingLinks(r.Host, r.URL, page, limit, total),
 		},
 		Data: data,
 	}
-
+	wrapper := lib.NewResponseWriterWrapper(w)
 	wrapper.WriteJSONResponse(200, response)
 }
 
 func (impl *serverImpl) FetchPlugin(w http.ResponseWriter, r *http.Request, name string) {
 
-	wrapper := NewResponseWriterWrapper(w)
+	wrapper := lib.NewResponseWriterWrapper(w)
 
 	data := &server.Plugin{
 		Name: &name,
@@ -50,7 +50,7 @@ func (impl *serverImpl) FetchPlugin(w http.ResponseWriter, r *http.Request, name
 }
 
 func (impl *serverImpl) ListUsers(w http.ResponseWriter, r *http.Request, params server.ListUsersParams) {
-	wrapper := NewResponseWriterWrapper(w)
+	wrapper := lib.NewResponseWriterWrapper(w)
 
 	data := make([]server.User, 0)
 
@@ -65,7 +65,7 @@ func (impl *serverImpl) ListUsers(w http.ResponseWriter, r *http.Request, params
 			Limit: limit,
 			Page:  page,
 			Total: total,
-			Links: buildPagingLinks(r.Host, r.URL, page, limit, total),
+			Links: lib.BuildPagingLinks(r.Host, r.URL, page, limit, total),
 		},
 		Data: data,
 	}
@@ -75,13 +75,29 @@ func (impl *serverImpl) ListUsers(w http.ResponseWriter, r *http.Request, params
 
 func (impl *serverImpl) CreateUser(w http.ResponseWriter, r *http.Request) {
 
+	decoder := new(lib.RequestBodyDecoder)
+	decoder.Strict = true
+
 	newUser := new(server.User)
-	err := json.NewDecoder(r.Body).Decode(newUser)
+	err := decoder.Decode(w, r, newUser)
 	if err != nil {
+		var malFormedError *lib.MalformedRequestError
+		if errors.As(err, &malFormedError) {
+			http.Error(w, malFormedError.Message, malFormedError.Code)
+			return
+		}
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	wrapper := NewResponseWriterWrapper(w)
+	wrapper := lib.NewResponseWriterWrapper(w)
 	wrapper.WriteJSONResponse(201, newUser)
+}
+
+func (impl *serverImpl) CreateToken(w http.ResponseWriter, r *http.Request) {
+
+	response := &server.CreateTokenJSONBody{}
+
+	wrapper := lib.NewResponseWriterWrapper(w)
+	wrapper.WriteJSONResponse(200, response)
 }

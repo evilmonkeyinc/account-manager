@@ -26,9 +26,6 @@ type ServerInterface interface {
 
 	// (POST /users)
 	CreateUser(w http.ResponseWriter, r *http.Request)
-
-	// (POST /users/token)
-	CreateToken(w http.ResponseWriter, r *http.Request)
 }
 
 // ServerInterfaceWrapper converts contexts to parameters.
@@ -137,15 +134,6 @@ func (siw *ServerInterfaceWrapper) CreateUser(w http.ResponseWriter, r *http.Req
 	siw.Handler.CreateUser(w, r.WithContext(ctx))
 }
 
-// CreateToken operation middleware
-func (siw *ServerInterfaceWrapper) CreateToken(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-
-	ctx = context.WithValue(ctx, "BasicAuth.Scopes", []string{""})
-
-	siw.Handler.CreateToken(w, r.WithContext(ctx))
-}
-
 // Handler creates http.Handler with routing matching OpenAPI spec.
 func Handler(si ServerInterface) http.Handler {
 	return HandlerFromMux(si, chi.NewRouter())
@@ -168,9 +156,6 @@ func HandlerFromMux(si ServerInterface, r chi.Router) http.Handler {
 	})
 	r.Group(func(r chi.Router) {
 		r.Post("/users", wrapper.CreateUser)
-	})
-	r.Group(func(r chi.Router) {
-		r.Post("/users/token", wrapper.CreateToken)
 	})
 
 	return r

@@ -1,4 +1,4 @@
-package service
+package lib
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"github.com/evilmonkeyinc/account-manager/gen/server"
 )
 
-func buildPagingLinks(host string, currentURL *url.URL, page, limit, total int) server.PagingLinks {
+func BuildPagingLinks(host string, currentURL *url.URL, page, limit, total int) server.PagingLinks {
 	lastPage := int(math.Ceil(float64(total) / float64(limit)))
 
 	firstURL, _ := url.Parse(currentURL.String())

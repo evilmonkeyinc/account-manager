@@ -18,10 +18,17 @@ components:
       $ref: "../components/responses/NotFoundError.yaml"
     "InternalServerError":
       $ref: "../components/responses/InternalServerError.yaml"
+  securitySchemas:
+    BasicAuth:
+      $ref: "../components/securitySchemes/basic.yaml"
+    BearerAuth:
+      $ref: "../components/securitySchemes/bearer.yaml"
 paths:
   users:
     get:
       operationId: "listUsers"
+      security:
+        - BearerAuth: []
       tags:
         - users
       description: "list all users"
@@ -41,6 +48,8 @@ paths:
           $ref: "#/components/responses/InternalServerError"
     post:
       operationId: "createUser"
+      security:
+        - BearerAuth: []
       tags:
         - users
       description: "create a new user"
@@ -61,3 +70,31 @@ paths:
           $ref: "#/components/responses/UnauthorizedError"
         "500":
           $ref: "#/components/responses/InternalServerError"
+  users/token:
+    post:
+      operationId: "createToken"
+      security:
+        - BasicAuth: []
+      tags:
+        - users
+      description: ""
+      requestBody:
+        description: ""
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  type: string
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                properties:
+                  token:
+                    type: string
+        "401":
+          $ref: "#/components/responses/UnauthorizedError"

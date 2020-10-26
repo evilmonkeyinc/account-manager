@@ -102,13 +102,5 @@ type ListUsersParams struct {
 // CreateUserJSONBody defines parameters for CreateUser.
 type CreateUserJSONBody User
 
-// CreateTokenJSONBody defines parameters for CreateToken.
-type CreateTokenJSONBody struct {
-	Name *string `json:"name,omitempty"`
-}
-
 // CreateUserRequestBody defines body for CreateUser for application/json ContentType.
 type CreateUserJSONRequestBody CreateUserJSONBody
-
-// CreateTokenRequestBody defines body for CreateToken for application/json ContentType.
-type CreateTokenJSONRequestBody CreateTokenJSONBody

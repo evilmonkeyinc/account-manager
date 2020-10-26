@@ -18,10 +18,15 @@ components:
       $ref: "../components/responses/NotFoundError.yaml"
     "InternalServerError":
       $ref: "../components/responses/InternalServerError.yaml"
+  securitySchemas:
+    BearerAuth:
+      $ref: "../components/securitySchemes/bearer.yaml"
 paths:
   plugins:
     get:
       operationId: "listPlugins"
+      security:
+        - BearerAuth: []
       tags:
         - plugin
       description: "list all supported plugins"
@@ -49,6 +54,8 @@ paths:
           type: string
     get:
       operationId: "fetchPlugin"
+      security:
+        - BearerAuth: []
       tags:
         - plugin
       description: "Get the specified plugin"
